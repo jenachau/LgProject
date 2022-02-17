@@ -15,6 +15,7 @@ struct mesg_buffer {
 	long mesg_type;
     char mesg_text[100];
     char send_key;
+    char name[20];
 } message;
 
 void sendMessage(){
@@ -26,8 +27,8 @@ void sendMessage(){
         exit(1);
     }
     printf("Client key to send: %d\n", key);
-
-    message.send_key = '1';
+    strcpy(message.name, "Thu Chau"), 19;
+    message.send_key = '2';
     message.mesg_type = 1;
 
     printf("Enter message: ");
@@ -63,7 +64,7 @@ void receiveMessage(){
     // msgrcv to receive message
     msgrcv(msgid, &message, sizeof(message), 1, 0);
     // display the message
-    printf("Data Received is : %s \n", message.mesg_text);
+    printf("From %s : %s \n",message.name, message.mesg_text);
 }
 
 int main()

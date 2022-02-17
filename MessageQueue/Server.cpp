@@ -14,6 +14,7 @@ struct mesg_buffer {
 	long mesg_type;
     char mesg_text[100];
     char send_key;
+    char name[20];
 } message;
 
 int main()

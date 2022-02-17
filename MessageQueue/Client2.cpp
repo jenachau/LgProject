@@ -12,10 +12,10 @@
 
 // structure for message queue
 struct mesg_buffer {
-    char *name;
 	long mesg_type;
     char mesg_text[100];
     char send_key;
+    char name[20];
 } message;
 
 void sendMessage(){
@@ -27,7 +27,7 @@ void sendMessage(){
     }
     printf("%d\n", key);
 
-    message.name = "Thi Tran";
+    strcpy(message.name, "Thi Tran"), 19;
     message.send_key = '1';
     message.mesg_type = 1;
 
