@@ -68,17 +68,7 @@ void receiveMessage(){
     printf("From %s : %s \n", message.name, message.mesg_text);
 }
 
-void function1(){
-    for (int i = 0; i < 200; i++){
-        printf("+");
-    }
-}
 
-void function2(){
-    for (int i = 0; i < 200; i++){
-        printf("-");
-    }
-}
 int main()
 {
     std::thread t1 {function1};

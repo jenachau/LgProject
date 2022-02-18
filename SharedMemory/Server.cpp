@@ -3,11 +3,10 @@
 #include <sys/shm.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <string.h>
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <string.h>
 using namespace std;
 
 #define MAXSIZE 27
@@ -21,16 +20,18 @@ int main()
     key1 = 86;
 
     shmid1=shmget(key1, MAXSIZE, IPC_CREAT | 0666);
+    type= (int*) shmat(shmid1, NULL, 0); 
 
-    type= (int*) shmat(shmid1, NULL, 0);  
+    ofstream image("img2.png", ios::out | ios::binary);
 
-    ifstream image("img.png", ios::in | ios::binary);
-    int ch;
     int i = 0;
-    while(!image.eof()){
-        type[i] = image.get();
-        i++;
+    while (type[i] >= 0)
+    {
+        cout<<type[i];
+        image.put(type[i]);  
+        i++;     
     }
+    
     image.close();
 
     exit(0);
