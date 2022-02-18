@@ -13,26 +13,40 @@ using namespace std;
 
 int main()
 {
-    int shmid1;
-    key_t key1;
-    int *type;
-
-    key1 = 86;
-
-    shmid1=shmget(key1, MAXSIZE, IPC_CREAT | 0666);
-    type= (int*) shmat(shmid1, NULL, 0); 
-
-    ofstream image("img2.png", ios::out | ios::binary);
-
-    int i = 0;
-    while (type[i] >= 0)
-    {
-        cout<<type[i];
-        image.put(type[i]);  
-        i++;     
-    }
     
-    image.close();
+        key_t key_receive = 1111111;
+        int shmid, shmid2;
+        key_t key;
+        int *type, *type2;
+
+        if ((shmid=shmget(key_receive, MAXSIZE, IPC_CREAT | 0666)) == -1){
+            cout<<"error\n";
+            exit(1);
+        }
+        type= (int*) shmat(shmid, NULL, 0); 
+        cout<<"\nfirst: "<<type<<endl;
+        int i =0;
+        while (type[i] >= 0)
+       {
+            cout<<type[i]<<" ";
+            i++;     
+        }
+        
+
+        int *temp = type;
+        if ((shmid2=shmget(33333, MAXSIZE, IPC_CREAT | 0666)) == -1){
+            cout<<"error\n";
+            exit(1);
+        }
+        type2 = (int*) shmat(shmid, NULL, 0); 
+        type2 = type;
+        cout<<"\nfirst2: "<<type2<<endl;
+        i = 0;
+        while (type2[i] >= 0)
+       {
+            cout<<type2[i]<<" ";
+            i++;     
+        }
 
     exit(0);
 }
