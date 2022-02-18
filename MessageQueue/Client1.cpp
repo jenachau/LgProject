@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include <thread>
 
 #define MAX 50
 #define PERMS 0644
@@ -70,8 +71,10 @@ void receiveMessage(){
 int main()
 {
     while(1){
-        sendMessage();
-        receiveMessage();
+        std::thread t1(sendMessage);
+        std::thread t2(receiveMessage);
+        t1.join();
+        t2.join();
     }
     return 0;
 }

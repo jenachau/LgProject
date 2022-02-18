@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include <thread>
 
 #define MAX 50
 #define PERMS 0644
@@ -67,12 +68,22 @@ void receiveMessage(){
     printf("From %s : %s \n", message.name, message.mesg_text);
 }
 
+void function1(){
+    for (int i = 0; i < 200; i++){
+        printf("+");
+    }
+}
+
+void function2(){
+    for (int i = 0; i < 200; i++){
+        printf("-");
+    }
+}
 int main()
 {
-    while(1){
-        sendMessage();
-        receiveMessage();
-    }
+    std::thread t1 {function1};
+
+    
     return 0;
 }
 
