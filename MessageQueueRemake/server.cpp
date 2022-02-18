@@ -29,7 +29,7 @@ int main()
             exit(1);
         }
 
-        printf("server key to receive: %d\n", key);
+        // printf("server key to receive: %d\n", key);
         if ((msgid = msgget(key, PERMS | IPC_CREAT)) == -1) { 
             printf("msgget");
             exit(1);
@@ -39,7 +39,7 @@ int main()
         msgrcv(msgid, &message, sizeof(message), 1, 0);
 
         // display the message
-        printf("Data Received is : %s \n", message.mesg_text);
+        printf("Data Received form %s is : %s \n",message.name, message.mesg_text);
 
         // key to identifi recevier
         char sendKey = message.send_key;
@@ -49,7 +49,7 @@ int main()
             printf("ftok");
             exit(1);
         }
-        printf("server key to send: %d\n", key);
+        // printf("server key to send: %d\n", key);
 
         message.mesg_type = 1;
 
@@ -60,13 +60,14 @@ int main()
             printf("msgget");
             exit(1);
         }
-
+        if (message.send_key=='1') strcpy(mess,"Thu Chau");
+        else strcpy(mess,"Thi Tran");
         // strcpy(message.mesg_text, mess);
         // msgsnd to send message
         msgsnd(msgid, &message, sizeof(message), 0);
 
         // display the message
-        printf("Data send is : %s \n", message.mesg_text);
+        printf("Data send to %s \n", mess);
     }
     return 0;
 }
