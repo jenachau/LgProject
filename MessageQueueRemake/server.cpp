@@ -19,8 +19,9 @@ struct mesg_buffer {
 
 int main()
 {
+    printf("Server ready\n");
     while(1){
-        key_t key;
+        key_t key,keyBack;
         int msgid;
 
         // Receive message
@@ -35,7 +36,6 @@ int main()
             exit(1);
         }
         // msgrcv to receive message
-
         msgrcv(msgid, &message, sizeof(message), 1, 0);
 
         // display the message
@@ -43,9 +43,15 @@ int main()
 
         // key to identifi recevier
         char sendKey = message.send_key;
-
+        char sendKeyBack;
+        if (sendKey=='1') sendKeyBack='2';
+        else sendKeyBack='1';
         // Send message
         if ((key = ftok("progfile.txt", sendKey)) == -1) {
+            printf("ftok");
+            exit(1);
+        }
+        if ((keyBack = ftok("progfile.txt", sendKeyBack)) == -1) {
             printf("ftok");
             exit(1);
         }
@@ -60,12 +66,21 @@ int main()
             printf("msgget");
             exit(1);
         }
+        
         if (message.send_key=='1') strcpy(mess,"Thu Chau");
         else strcpy(mess,"Thi Tran");
         // strcpy(message.mesg_text, mess);
         // msgsnd to send message
         msgsnd(msgid, &message, sizeof(message), 0);
-
+        if ((msgid = msgget(keyBack, PERMS | IPC_CREAT)) == -1) { 
+            printf("msgget");
+            exit(1);
+        }
+        if (strcmp(message.mesg_text,"@off")==0){
+            strcpy(message.mesg_text,"@offMs");
+            msgsnd(msgid, &message, sizeof(message), 0);
+        }
+        
         // display the message
         printf("Data send to %s \n", mess);
     }
