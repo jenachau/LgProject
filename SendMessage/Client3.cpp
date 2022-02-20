@@ -1,7 +1,7 @@
 // C++ program for client1 
 #include "Common.cpp"
-#define MY_ID 1
-#define MY_NAME "Thu Chau"
+#define MY_ID 3
+#define MY_NAME "Hang Nguyen"
 
 mesg_buffer message;
 
