@@ -29,6 +29,7 @@ void sendMessage(){
     }
     message.mesg_type = 1;
     while(1){
+        printf("\rMe :");
         fgets(message.mesg_text, MAX, stdin);
         strcpy(message.name, "Thi Tran"), 19;
         message.send_key = 1;
@@ -60,12 +61,41 @@ void receiveMessage(){
         // msgrcv to receive message
         msgrcv(msgid, &message, sizeof(message), 1, 0);
         // display the message
-        printf("From %s : %s \n",message.name, message.mesg_text);
+        if (strcmp(message.mesg_text,"@onl")==0){
+            printf("\r%s is online\n",message.name);
+            printf("Me: ");
+        }
+        else {
+            printf("\rFrom %s : %s",message.name, message.mesg_text);
+            printf("Me: ");
+        }
+        
+        fflush(stdout);
     }
 }
+void OnlineNoti(){
+    key_t key;
+    int msgid;
 
+    if ((key = ftok("progfile.txt", SEVER_ID)) == -1) {
+        printf("ftok");
+        exit(1);
+    }
+    message.mesg_type = 1;
+        strcpy(message.mesg_text,"@onl");
+        message.send_key = 1;
+        strcpy(message.name, "Thi Tran"), 19;
+        if ((msgid = msgget(key, PERMS | IPC_CREAT)) == -1) { 
+            printf("msgget");
+            exit(1);
+        }
+
+        // msgsnd to send message
+        msgsnd(msgid, &message, sizeof(message), 0);
+}
 int main()
 {
+    OnlineNoti();
     std::thread t1(sendMessage);
     std::thread t2(receiveMessage);
     t1.join();
